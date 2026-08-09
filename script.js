@@ -151,11 +151,14 @@ async function sunucudanRotalariCek() {
   try {
     const yanit = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=3');
     const veriler = await yanit.json();
-    veriler.forEach(eleman => {
+    veriler.forEach((eleman, indeks) => {
+      let duzenlenmisIsim = eleman.title[0].toUpperCase() + eleman.title.slice(1,15) +" (Sanal Rota)";
+      let kategori = indeks % 2 === 0 ? "Tarihi" : "Doğa";
+      
       mekanlar.push({
-        isim: eleman.title.slice(0, 15),
+        isim: duzenlenmisIsim,
         sehir: "Canlı Sunucu",
-        kategori: "Doğa",
+        kategori: kategori,
         puan: 5.0
       });
     });
