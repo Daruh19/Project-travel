@@ -1,0 +1,82 @@
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+h1{
+    color: #2c3e50;
+    text-align: center;    
+}
+.form-alani, .filter-alani{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+input,select,button{
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+input:focus, select:focus{
+    outline: none;
+    border-color: #3498db;   
+}
+button{
+    background-color: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ;
+}
+button:hover{
+    background-color: #c0392b;
+}
+ul{
+    list-style-type: none;
+    padding: 0;
+}
+li{
+    background-color: #f8f9fa;
+    border-left: 4px solid #3498db;
+    margin-bottom: 10px;
+    padding: 12px;
+    border-radius: 4px;
+    display: flex;    
+    align-items: center;
+}
+li button{
+  padding: 4px 8px;
+  font-size: 12px;
+}
+.istatistik-paneli {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.istatistik-paneli .kart {
+    flex: 1;
+    background: #f0f8ff;
+    border:1px solid #3498db;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+.istatistik-paneli .kart h3 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: #2c3e50;
+}
+.istatistik-paneli .kart p {
+    margin: 0;
+    font-size: 22px;
+    font-weight: bold;
+    color: #2980b9;
+}

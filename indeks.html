@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seyahat Rotalarım</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Seyahat Rotalarım</h1>
+    
+    <div class="istatistik-paneli">
+        <div class="kart">
+            <h3>Toplam Mekan</h3>
+            <p id="toplamMekanSayisi">0</p>
+        </div>
+        <div class="kart">
+            <h3>Ortalama Puan</h3>
+            <p id="ortalamaPuanSayisi">0</p>
+        </div>
+    </div>
+
+    <!-- Kategori Filtre Butonları (onclick SİLİNDİ, id/data eklendi) -->
+    <div style="margin: 10px 0;" id="kategoriButonlari">
+        <button data-kategori="hepsi">🏛️🌲 Tümü</button>
+        <button data-kategori="Tarihi">🏛️ Tarihi Yerler</button>
+        <button data-kategori="Doğa">🌲 Doğa</button>
+        <button id="btnApiYukle" style="background-color: #27ae60;">🌐 Sunucudan Rotaları Çek</button>
+    </div>
+
+    <!-- Arama İnputu (oninput SİLİNDİ) -->
+    <div style="margin-bottom:15px;">
+        <label><strong>Mekan Ara:</strong></label>
+        <input type="text" id="aramaInput" placeholder="Mekan veya şehir adı yazın">
+    </div>
+
+    <!-- Form Alanı -->
+    <input type="text" id="sehirAdi" placeholder="Şehir Adı">
+    <input type="text" id="mekanAdi" placeholder="Mekan Adı">
+    <select id="kategoriSecim">
+        <option value="">Kategori Seçin...</option>
+        <option value="Tarihi">🏛️ Tarihi</option>
+        <option value="Doğa">🌲 Doğa</option>
+        <option value="Deniz">🏖️ Deniz</option>
+    </select>
+    <br><br>
+    
+    <!-- Butonlar (onclick'ler SİLİNDİ, id verildi) -->
+    <button id="ekleBtn">Seyehate ekle</button>
+    <button id="temizleBtn">Tümünü temizle</button>
+    <button id="btnYuksekPuan">⭐ En Yüksek Puanlılar</button>
+    <button id="btnDusukPuan">📉 Düşük Puanlılar</button>
+
+    <!-- Liste -->
+    <ul id="seyehatListesi"></ul>
+
+    <!-- Ana Modülümüz -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>
