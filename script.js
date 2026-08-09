@@ -21,8 +21,17 @@ function listeyiCiz(gosterilecekListe = mekanlar) {
   seyehatListesi.innerHTML = '';
 
   if (gosterilecekListe.length === 0) {
-    seyehatListesi.innerHTML = '<li style="color: red;">Aradığınız kriterlere uygun mekan bulunamadı 🔍</li>';
+    seyehatListesi.innerHTML = `
+      <li style="color: red; display: flex; justify-content: space-between; align-items: center;">
+        <span>Aradığınız kriterlere uygun mekan bulunamadı 🔍</span>
+        <button id="btnFiltreSifirla" style="background-color: #e67e22;">Filtreleri Sıfırla</button>
+      </li>
+    `;
     istatistikGuncelle();
+document.querySelector('#btnFiltreSifirla')?.addEventListener('click', () => {
+      aramaInput.value = '';
+      listeyiCiz();
+    });
     return;
   }
 
