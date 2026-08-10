@@ -36,12 +36,14 @@ document.querySelector('#btnFiltreSifirla')?.addEventListener('click', () => {
   }
 
   const htmlDizisi = gosterilecekListe.map((mekan, indeks) => {
-    const { isim, sehir, kategori, puan } = mekan;
+    const { isim, sehir, kategori, puan, favori } = mekan;
+    const kalpIkonu = favori ? '❤️' : '🤍';
     return `
       <li>
         <strong>${isim}</strong> (${sehir}) - [${kategori}] 
         | Puan: <strong>${puan.toFixed(1)}</strong>
-        <button data-islem="azalt" data-indeks="${indeks}">➖</button>
+        <button data-islem="favori" data-indeks="${indeks}">${kalpIkonu}</button>
+        <button data-islem="azalt" data-indeks="${indeks}">➖</button>        
         <button data-islem="arttir" data-indeks="${indeks}">➕</button>
         <button data-islem="duzenle" data-indeks="${indeks}">✏️ Düzenle</button>
         <button data-islem="sil" data-indeks="${indeks}">❌ Sil</button>
@@ -81,6 +83,10 @@ seyehatListesi.addEventListener('click', function(e) {
     kategoriSecim.value = mekanlar[indeks].kategori;
     ekleBtn.textContent = "Mekanı Güncelle";
     duzenlenenIndeks = indeks;
+  } else if (islem === 'favori') {
+    mekanlar[indeks].favori = !mekanlar[indeks].favori;
+    hafizayaKaydet();
+    listeyiCiz();
   }
 });
 
@@ -136,7 +142,11 @@ kategoriButonlari.addEventListener('click', function(e) {
 
   if (secilenKategori === 'hepsi') {
     listeyiCiz();
-  } else {
+  }else if (secilenKategori === 'favori') {
+    const favoriler = mekanlar.filter(mekan => mekan.favori === true);
+    listeyiCiz(favoriler);
+  }
+   else {
     const filtrelenmis = mekanlar.filter(mekan => mekan.kategori === secilenKategori);
     listeyiCiz(filtrelenmis);
   }

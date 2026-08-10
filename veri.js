@@ -1,8 +1,8 @@
 export const mekanlar = JSON.parse(localStorage.getItem('benimMekanlarim')) || [
-  { isim: "Anıtkabir", sehir: "Ankara", kategori: "Tarihi", puan: 4.9 },
-  { isim: "Kapadokya", sehir: "Nevşehir", kategori: "Doğa", puan: 4.8 },
-  { isim: "Ölüdeniz", sehir: "Muğla", kategori: "Deniz", puan: 4.7 },
-  { isim: "Sümela Manastırı", sehir: "Trabzon", kategori: "Tarihi", puan: 4.6 }
+  { isim: "Anıtkabir", sehir: "Ankara", kategori: "Tarihi", puan: 4.9, favori: false },
+  { isim: "Kapadokya", sehir: "Nevşehir", kategori: "Doğa", puan: 4.8, favori: true },
+  { isim: "Ölüdeniz", sehir: "Muğla", kategori: "Deniz", puan: 4.7, favori: false },
+  { isim: "Sümela Manastırı", sehir: "Trabzon", kategori: "Tarihi", puan: 4.6, favori: false }
 ];
 
 export function hafizayaKaydet() {
