@@ -52,7 +52,8 @@ document.querySelector('#btnFiltreSifirla')?.addEventListener('click', () => {
   });
 
   seyehatListesi.innerHTML = htmlDizisi.join('');
-  istatistikGuncelle();
+  
+  istatistikGuncelle(gosterilecekListe);
 }
 
 // DİNAMİK LİSTE BUTONLARINI DİNLEME (Event Delegation)
