@@ -36,17 +36,42 @@ document.querySelector('#btnFiltreSifirla')?.addEventListener('click', () => {
   }
 
   const htmlDizisi = gosterilecekListe.map((mekan, indeks) => {
-    const { isim, sehir, kategori, puan, favori } = mekan;
-    const kalpIkonu = favori ? '❤️' : '🤍';
+    const { isim, sehir, kategori, puan, favori,resim,aciklama} = mekan;
+
+    const miniResim = resim || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=300&q=80';
+    const miniAciklama = aciklama || 'Bu rota için detaylar ve tavsiyeler hazırlanıyor.';
+
     return `
-      <li>
-        <strong>${isim}</strong> (${sehir}) - [${kategori}] 
-        | Puan: <strong>${puan.toFixed(1)}</strong>
-        <button data-islem="favori" data-indeks="${indeks}">${kalpIkonu}</button>
-        <button data-islem="azalt" data-indeks="${indeks}">➖</button>        
-        <button data-islem="arttir" data-indeks="${indeks}">➕</button>
-        <button data-islem="duzenle" data-indeks="${indeks}">✏️ Düzenle</button>
-        <button data-islem="sil" data-indeks="${indeks}">❌ Sil</button>
+      <li class="travel-card-mini" data-islem="detay-ac" data-indeks="${indeks}">
+        <!-- 1. Küçük Kapak Görseli -->
+        <img src="${miniResim}" alt="${isim}" class="mini-card-img" />
+
+        <div class="mini-card-body">
+          <!-- 2. Başlık ve Favori Kalbi -->
+          <div class="mini-header">
+            <h3 class="mini-title">${isim}</h3>
+            <button style="border:none; background:none; cursor:pointer;" data-islem="favori" data-indeks="${indeks}">
+              ${favori ? '❤️' : '🤍'}
+            </button>
+          </div>
+
+          <!-- 3. Konum, Kategori ve Puan -->
+          <div class="mini-info">
+            <span>📍 ${sehir}</span>
+            <span class="mini-tag">${kategori}</span>
+            <span>⭐ ${puan.toFixed(1)}</span>
+          </div>
+
+          <!-- 4. Kısa Açıklama Özet (2 Satır + Üç Nokta) -->
+          <p class="mini-desc">${miniAciklama}</p>
+
+          <!-- 5. Hava Durumu Yer Tutucu -->
+          <div class="weather-box-mini" id="hava-${indeks}">
+            🌤️ Yükleniyor...
+          </div>
+
+          <div class="click-hint">Detaylar için tıkla ➔</div>
+        </div>
       </li>
     `;
   });
