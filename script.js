@@ -15,6 +15,17 @@ const apiYukleBtn = document.querySelector('#btnApiYukle');
 const kategoriButonlari = document.querySelector('#kategoriButonlari');
 
 let duzenlenenIndeks = null;
+//Modal Elamanları
+const detayModal = document.querySelector('#detayModal');
+const modalKapatBtn = document.querySelector('#modalKapatBtn');
+const modalResim = document.querySelector('#modalResim');
+const modalBaslik = document.querySelector('#modalBaslik');
+const modalKategori = document.querySelector('#modalKategori');
+const modalSehir = document.querySelector('#modalSehir');
+const modalAciklama = document.querySelector('#modalAciklama');
+const modalPuan = document.querySelector('#modalPuan');
+
+
 
 // EKRANI ÇİZME FONKSİYONU
 function listeyiCiz(gosterilecekListe = mekanlar) {
@@ -83,36 +94,23 @@ document.querySelector('#btnFiltreSifirla')?.addEventListener('click', () => {
 
 // DİNAMİK LİSTE BUTONLARINI DİNLEME (Event Delegation)
 seyehatListesi.addEventListener('click', function(e) {
-  const buton = e.target;
-  const islem = buton.dataset.islem;
-  const indeks = Number(buton.dataset.indeks);
+  // 1. Tıklanan en yakın data-islem elemanını buluyoruz
+  const hedef = e.target.closest('[data-islem]');
+  if (!hedef) return;
 
-  if (!islem) return;
+  const islem = hedef.dataset.islem;
+  const indeks = Number(hedef.dataset.indeks);
 
-  if (islem === 'sil') {
-    if (confirm('Bu mekanı silmek istediğinize emin misiniz?')) {
-      mekanlar.splice(indeks, 1);
-      hafizayaKaydet();
-      listeyiCiz();
-    }
-  } else if (islem === 'arttir') {
-    mekanlar[indeks].puan = Math.min(5.0, mekanlar[indeks].puan + 0.1);
-    hafizayaKaydet();
-    listeyiCiz();
-  } else if (islem === 'azalt') {
-    mekanlar[indeks].puan = Math.max(0, mekanlar[indeks].puan - 0.1);
-    hafizayaKaydet();
-    listeyiCiz();
-  } else if (islem === 'duzenle') {
-    mekanAdi.value = mekanlar[indeks].isim;
-    sehirAdi.value = mekanlar[indeks].sehir;
-    kategoriSecim.value = mekanlar[indeks].kategori;
-    ekleBtn.textContent = "Mekanı Güncelle";
-    duzenlenenIndeks = indeks;
-  } else if (islem === 'favori') {
+  // 2. Eğer tıklanan yer FAVORİ butonu ise:
+  if (islem === 'favori') {
+    e.stopPropagation(); // 🛑 Tıklamanın dış kart katmanına sıçrayıp Modalı açmasını engeller!
     mekanlar[indeks].favori = !mekanlar[indeks].favori;
     hafizayaKaydet();
     listeyiCiz();
+  } 
+  // 3. Eğer tıklanan yer KARTIN KENDİSİ ise:
+  else if (islem === 'detay-ac') {
+    detayGoster(indeks);
   }
 });
 
@@ -221,3 +219,26 @@ apiYukleBtn.addEventListener('click', sunucudanRotalariCek);
 
 // İLK AÇILIŞTA EKRANI ÇİZ
 listeyiCiz();
+function detayGoster(indeks){
+
+  const mekan = mekanlar[indeks];
+
+  modalResim.src = mekan.resim || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=500';
+  modalBaslik.textContent = mekan.isim;
+  modalKategori.textContent = mekan.kategori;
+  modalSehir.textContent = `📍${mekan.sehir}`;
+  modalAciklama.textContent = mekan.aciklama || 'Bu mekan hakkında henüz detaylı açıklama eklenmemiş.';
+  modalPuan.textContent = `⭐ Puan: ${mekan.puan.toFixed(1)}`;
+
+  detayModal.classList.add('aktif');
+}
+function modaliKapat(){
+  detayModal.classList.remove('aktif');
+}
+modalKapatBtn.addEventListener('click',modaliKapat);
+
+detayModal.addEventListener('click', (e) =>{
+  if(e.target === detayModal){
+    modaliKapat();
+  }
+});

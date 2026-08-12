@@ -54,6 +54,22 @@
 
     <!-- Liste -->
     <ul id="seyehatListesi"></ul>
+    
+    <div id="detayModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-kapat-btn" id="modalKapatBtn">✖</button>
+            <img id="modalResim" src="" alt="" class="modal-img">
+            <div class="modal-body">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 id="modalBaslik" style="margin: 0;"></h2>
+                    <span id="modalKategori" class="mini-tag"></span>
+                </div>
+                <p id="modalSehir" style="color:#64748b; margin: 8px 0;"></p>
+                <p id="modalAciklama" style="line-height: 1.5; color:#334155;"></p>
+                <p id="modalPuan" style="font-weight: bold;"></p>
+            </div>
+        </div>
+    </div>
 
     <!-- Ana Modülümüz -->
     <script type="module" src="script.js"></script>
