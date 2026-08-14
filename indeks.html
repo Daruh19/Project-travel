@@ -7,55 +7,70 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Seyahat Rotalarım</h1>
+
+    <!-- Sayfanın Başlığı ve Üst Alanı -->
+    <header>
+        <h1>Seyahat Rotalarım</h1>
+    </header>
     
-    <div class="istatistik-paneli">
-        <div class="kart">
-            <h3>Toplam Mekan</h3>
-            <p id="toplamMekanSayisi">0</p>
-        </div>
-        <div class="kart">
-            <h3>Ortalama Puan</h3>
-            <p id="ortalamaPuanSayisi">0</p>
-        </div>
-    </div>
+    <!-- Sayfanın Ana İçerik Alanı -->
+    <main>
+        <!-- İstatistik Bölümü -->
+        <section class="istatistik-paneli">
+            <div class="kart">
+                <h3>Toplam Mekan</h3>
+                <p id="toplamMekanSayisi">0</p>
+            </div>
+            <div class="kart">
+                <h3>Ortalama Puan</h3>
+                <p id="ortalamaPuanSayisi">0</p>
+            </div>
+        </section>
 
-    <!-- Kategori Filtre Butonları (onclick SİLİNDİ, id/data eklendi) -->
-    <div style="margin: 10px 0;" id="kategoriButonlari">
-        <button data-kategori="hepsi">🏛️🌲 Tümü</button>
-        <button data-kategori="Tarihi">🏛️ Tarihi Yerler</button>
-        <button data-kategori="Doğa">🌲 Doğa</button>
-        <button data-kategori="favori" style="background-color: #e74c3c;">❤️ Favoriler</button>
-        <button id="btnApiYukle" style="background-color: #27ae60;">🌐 Sunucudan Rotaları Çek</button>
-    </div>
+        <!-- Filtreleme ve Kontrol Alanı -->
+        <section class="kontroller-alani">
+            <div style="margin: 10px 0;" id="kategoriButonlari">
+                <button data-kategori="hepsi">🏛️🌲 Tümü</button>
+                <button data-kategori="Tarihi">🏛️ Tarihi Yerler</button>
+                <button data-kategori="Doğa">🌲 Doğa</button>
+                <button data-kategori="favori" style="background-color: #e74c3c;">❤️ Favoriler</button>
+                <button id="btnApiYukle" style="background-color: #27ae60;">🌐 Sunucudan Rotaları Çek</button>
+            </div>
 
-    <!-- Arama İnputu (oninput SİLİNDİ) -->
-    <div style="margin-bottom:15px;">
-        <label><strong>Mekan Ara:</strong></label>
-        <input type="text" id="aramaInput" placeholder="Mekan veya şehir adı yazın">
-    </div>
+            <div style="margin-bottom:15px;">
+                <label><strong>Mekan Ara:</strong></label>
+                <input type="text" id="aramaInput" placeholder="Mekan veya şehir adı yazın">
+            </div>
 
-    <!-- Form Alanı -->
-    <input type="text" id="sehirAdi" placeholder="Şehir Adı">
-    <input type="text" id="mekanAdi" placeholder="Mekan Adı">
-    <select id="kategoriSecim">
-        <option value="">Kategori Seçin...</option>
-        <option value="Tarihi">🏛️ Tarihi</option>
-        <option value="Doğa">🌲 Doğa</option>
-        <option value="Deniz">🏖️ Deniz</option>
-    </select>
-    <br><br>
+            <!-- Ekleme Formu -->
+            <div class="form-alani">
+                <input type="text" id="sehirAdi" placeholder="Şehir Adı">
+                <input type="text" id="mekanAdi" placeholder="Mekan Adı">
+                <select id="kategoriSecim">
+                    <option value="">Kategori Seçin...</option>
+                    <option value="Tarihi">🏛️ Tarihi</option>
+                    <option value="Doğa">🌲 Doğa</option>
+                    <option value="Deniz">🏖️ Deniz</option>
+                </select>
+            </div>
+            <br>
+            
+            <div class="buton-alani">
+                <button id="ekleBtn">Seyehate ekle</button>
+                <button id="temizleBtn">Tümünü temizle</button>
+                <button id="btnYuksekPuan">⭐ En Yüksek Puanlılar</button>
+                <button id="btnDusukPuan">📉 Düşük Puanlılar</button>
+            </div>
+        </section>
+
+        <!-- Rota Kartlarının Listelendiği Bölüm -->
+        <section class="liste-bolumu">
+            <ul id="seyehatListesi"></ul>
+        </section>
+    </main>
     
-    <!-- Butonlar (onclick'ler SİLİNDİ, id verildi) -->
-    <button id="ekleBtn">Seyehate ekle</button>
-    <button id="temizleBtn">Tümünü temizle</button>
-    <button id="btnYuksekPuan">⭐ En Yüksek Puanlılar</button>
-    <button id="btnDusukPuan">📉 Düşük Puanlılar</button>
-
-    <!-- Liste -->
-    <ul id="seyehatListesi"></ul>
-    
-    <div id="detayModal" class="modal-overlay">
+    <!-- Sayfadan Bağımsız Diyalog/Pop-up Alanı (Modal) -->
+    <aside id="detayModal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-kapat-btn" id="modalKapatBtn">✖</button>
             <img id="modalResim" src="" alt="" class="modal-img">
@@ -69,9 +84,9 @@
                 <p id="modalPuan" style="font-weight: bold;"></p>
             </div>
         </div>
-    </div>
+    </aside>
 
-    <!-- Ana Modülümüz -->
+    <!-- Ana Modül -->
     <script type="module" src="script.js"></script>
 </body>
 </html>
