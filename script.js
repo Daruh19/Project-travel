@@ -53,43 +53,46 @@ document.querySelector('#btnFiltreSifirla')?.addEventListener('click', () => {
     const miniAciklama = aciklama || 'Bu rota için detaylar ve tavsiyeler hazırlanıyor.';
 
     return `
-      <li class="travel-card-mini" data-islem="detay-ac" data-indeks="${indeks}">
-        <!-- 1. Küçük Kapak Görseli -->
-        <img src="${miniResim}" alt="${isim}" class="mini-card-img" />
+      <li class="travel-card-wrapper">
+    <article class="travel-card-mini" data-islem="detay-ac" data-indeks="${indeks}">
+      <!-- 1. Küçük Kapak Görseli -->
+      <img src="${miniResim}" alt="${isim}" class="mini-card-img" />
 
-        <div class="mini-card-body">
-          <!-- 2. Başlık ve Favori Kalbi -->
-          <div class="mini-header">
-            <h3 class="mini-title">${isim}</h3>
-            <button style="border:none; background:none; cursor:pointer;" data-islem="favori" data-indeks="${indeks}">
-              ${favori ? '❤️' : '🤍'}
-            </button>
-          </div>
-
-          <!-- 3. Konum, Kategori ve Puan -->
-          <div class="mini-info">
-            <span>📍 ${sehir}</span>
-            <span class="mini-tag">${kategori}</span>
-            <span>⭐ ${puan.toFixed(1)}</span>
-          </div>
-
-          <!-- 4. Kısa Açıklama Özet (2 Satır + Üç Nokta) -->
-          <p class="mini-desc">${miniAciklama}</p>
-
-          <!-- 5. Hava Durumu Yer Tutucu -->
-          <div class="weather-box-mini" id="hava-${indeks}">
-            🌤️ Yükleniyor...
-          </div>
-
-          <div class="click-hint">Detaylar için tıkla ➔</div>
+      <div class="mini-card-body">
+        <!-- 2. Başlık ve Favori Kalbi -->
+        <div class="mini-header">
+          <h3 class="mini-title">${isim}</h3>
+          <button style="border:none; background:none; cursor:pointer;" data-islem="favori" data-indeks="${indeks}">
+            ${favori ? '❤️' : '🤍'}
+          </button>
         </div>
-      </li>
+
+        <!-- 3. Konum, Kategori ve Puan -->
+        <div class="mini-info">
+          <span>📍 ${sehir}</span>
+          <span class="mini-tag">${kategori}</span>
+          <span>⭐ ${puan.toFixed(1)}</span>
+        </div>
+
+        <!-- 4. Kısa Açıklama Özet -->
+        <p class="mini-desc">${miniAciklama}</p>
+
+        <!-- 5. Hava Durumu Yer Tutucu -->
+        <div class="weather-box-mini" id="hava-${indeks}">
+          🌤️ Yükleniyor...
+        </div>
+
+        <div class="click-hint">Detaylar için tıkla ➔</div>
+      </div>
+    </article>
+  </li>
     `;
   });
 
   seyehatListesi.innerHTML = htmlDizisi.join('');
   
   istatistikGuncelle(gosterilecekListe);
+  kartHavaDurumlariniGuncelle(gosterilecekListe);
 }
 
 // DİNAMİK LİSTE BUTONLARINI DİNLEME (Event Delegation)
@@ -242,3 +245,22 @@ detayModal.addEventListener('click', (e) =>{
     modaliKapat();
   }
 });
+async function havaDurumuGetir(sehir) {
+  await new Promise(resolve => setTimeout(resolve,1000));
+
+  const durumlar = ['☀️ 25°C Güneşli', '🌤️ 20°C Parçalı Bulutlu', '🌧️ 15°C Yağmurlu', '🌤️ 22°C Açık'];
+  const rastgeleDurum = durumlar[Math.floor(Math.random() * durumlar.length)];
+
+  return rastgeleDurum;
+
+}
+async function kartHavaDurumlariniGuncelle(liste) {
+  liste.forEach(async(mekan,indeks) =>{
+    const havaKutusu = document.querySelector(`#hava-${indeks}`);
+    if(havaKutusu){
+      const durum = await havaDurumuGetir(mekan.sehir);
+      havaKutusu.textContent = durum;
+    }
+  });
+  
+}
