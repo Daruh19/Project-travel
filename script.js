@@ -52,9 +52,11 @@ document.querySelector('#btnFiltreSifirla')?.addEventListener('click', () => {
     const miniResim = resim || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=300&q=80';
     const miniAciklama = aciklama || 'Bu rota için detaylar ve tavsiyeler hazırlanıyor.';
 
+    const favoriSinifi = favori ? 'favori-aktif' : '';
+
     return `
       <li class="travel-card-wrapper">
-    <article class="travel-card-mini" data-islem="detay-ac" data-indeks="${indeks}">
+    <article class="travel-card-mini ${favoriSinifi}" data-islem="detay-ac" data-indeks="${indeks}">
       <!-- 1. Küçük Kapak Görseli -->
       <img src="${miniResim}" alt="${isim}" class="mini-card-img" />
 

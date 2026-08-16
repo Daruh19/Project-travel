@@ -238,3 +238,7 @@ li button{
   align-items: center;
   justify-content: center;
 }
+.travel-card-mini.favori-aktif{
+  border: 2px solid #e74c3c;
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
+}
