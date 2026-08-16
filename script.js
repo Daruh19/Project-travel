@@ -256,13 +256,20 @@ async function havaDurumuGetir(sehir) {
   return rastgeleDurum;
 
 }
+const havaDurumHafizasi = {};
+
 async function kartHavaDurumlariniGuncelle(liste) {
   liste.forEach(async(mekan,indeks) =>{
     const havaKutusu = document.querySelector(`#hava-${indeks}`);
-    if(havaKutusu){
+    if(!havaKutusu) return;
+    
+    if(havaDurumHafizasi[mekan.sehir]){
+      havaKutusu.textContent = havaDurumHafizasi[mekan.sehir];
+      return;
+      }
       const durum = await havaDurumuGetir(mekan.sehir);
+      havaDurumHafizasi[mekan.sehir] = durum;
       havaKutusu.textContent = durum;
-    }
   });
   
 }
