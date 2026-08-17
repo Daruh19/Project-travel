@@ -1,3 +1,6 @@
+:root{
+  --primary-color: #e74c3c;
+}
 body{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f7f6;
@@ -239,6 +242,6 @@ li button{
   justify-content: center;
 }
 .travel-card-mini.favori-aktif{
-  border: 2px solid #e74c3c;
+  border: 2px solid var(--primary-color);
   box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
 }
