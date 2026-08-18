@@ -25,7 +25,28 @@ const modalSehir = document.querySelector('#modalSehir');
 const modalAciklama = document.querySelector('#modalAciklama');
 const modalPuan = document.querySelector('#modalPuan');
 
+const UNSPLASH_KEY = "2cKS8lvGWfpUsN3P9G-O2L5v6P2ydCZ0bcuWXUthnIk"
+const havaDurumuHafizasi = {};
+let aktifResimler = [];
+let mevcutResimIndeksi = 0;
 
+async function sehirFotograflariniGetir(sehirAdi, miktar = 4) {
+  try{
+    const url = `https://api.unsplash.com/search/photos?page=1&query=${sehirAdi}&per_page=${miktar}&client_id=${UNSPLASH_KEY}`;
+    const yanıt = await fetch(url);
+
+    if (!yanıt.ok) throw new Error("Fotoğraf Çekilemedi");
+
+    const veri = await yanıt.json();
+    
+    return veri.results.map(foto => foto.urls.regular);
+  }catch(hata){
+    console.error("Unsplash API Hatası:", hata);
+
+    return["https://images.unsplash.com/photo-1590077428593-a55bb07c4665?auto=format&fit=crop&w=400&q=80"];
+  }
+  
+}
 
 // EKRANI ÇİZME FONKSİYONU
 function listeyiCiz(gosterilecekListe = mekanlar) {
@@ -224,18 +245,30 @@ apiYukleBtn.addEventListener('click', sunucudanRotalariCek);
 
 // İLK AÇILIŞTA EKRANI ÇİZ
 listeyiCiz();
-function detayGoster(indeks){
+async function detayGoster(indeks){
 
   const mekan = mekanlar[indeks];
 
-  modalResim.src = mekan.resim || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=500';
+  
   modalBaslik.textContent = mekan.isim;
   modalKategori.textContent = mekan.kategori;
   modalSehir.textContent = `📍${mekan.sehir}`;
   modalAciklama.textContent = mekan.aciklama || 'Bu mekan hakkında henüz detaylı açıklama eklenmemiş.';
   modalPuan.textContent = `⭐ Puan: ${mekan.puan.toFixed(1)}`;
 
+  modalResim.src = 'https://via.placeholder.com/400x200?text=Yukleniyor...';
   detayModal.classList.add('aktif');
+
+  const aramaKelimeleri = `${mekan.isim}${mekan.sehir}`;
+  aktifResimler = await sehirFotograflariniGetir(aramaKelimeleri, 4);
+  mevcutResimIndeksi = 0;
+
+  if (aktifResimler.length > 0) {
+    modalResim.src = aktifResimler[0];    
+  }else{
+    modalResim.src = mekan.resim || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=500';
+  }
+
 }
 function modaliKapat(){
   detayModal.classList.remove('aktif');
@@ -256,20 +289,33 @@ async function havaDurumuGetir(sehir) {
   return rastgeleDurum;
 
 }
-const havaDurumHafizasi = {};
+
 
 async function kartHavaDurumlariniGuncelle(liste) {
   liste.forEach(async(mekan,indeks) =>{
     const havaKutusu = document.querySelector(`#hava-${indeks}`);
     if(!havaKutusu) return;
     
-    if(havaDurumHafizasi[mekan.sehir]){
-      havaKutusu.textContent = havaDurumHafizasi[mekan.sehir];
+    if(havaDurumuHafizasi[mekan.sehir]){
+      havaKutusu.textContent = havaDurumuHafizasi[mekan.sehir];
       return;
       }
       const durum = await havaDurumuGetir(mekan.sehir);
-      havaDurumHafizasi[mekan.sehir] = durum;
+      havaDurumuHafizasi[mekan.sehir] = durum;
       havaKutusu.textContent = durum;
   });
   
 }
+sehirFotograflariniGetir("Istanbul").then(resimler => {
+  console.log("İstanbul fotoğrafları:", resimler);
+});
+document.querySelector('#sliderNext')?.addEventListener('click', () =>{
+  if (aktifResimler.length === 0) return;
+  mevcutResimIndeksi = (mevcutResimIndeksi + 1) % aktifResimler.length;
+  modalResim.src = aktifResimler[mevcutResimIndeksi];
+});
+document.querySelector('#sliderPrev')?.addEventListener('click', () => {
+  if(aktifResimler.length === 0) return;
+  mevcutResimIndeksi = (mevcutResimIndeksi - 1 + aktifResimler.length) % aktifResimler.length;
+  modalResim.src = aktifResimler[mevcutResimIndeksi];
+});
