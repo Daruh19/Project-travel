@@ -1,7 +1,8 @@
 export const mekanlar = JSON.parse(localStorage.getItem('benimMekanlarim')) || [
   { 
-isim: "Anıtkabir", 
+    isim: "Anıtkabir", 
     sehir: "Ankara", 
+    aramaTerimi: "Anitkabir",
     kategori: "Tarihi", 
     puan: 5.0, 
     favori: true,
@@ -12,6 +13,7 @@ isim: "Anıtkabir",
   { 
     isim: "Ölüdeniz", 
     sehir: "Muğla", 
+    aramaTerimi: "Oludeniz",
     kategori: "Deniz", 
     puan: 4.9, 
     favori: false,
@@ -22,6 +24,7 @@ isim: "Anıtkabir",
   { 
     isim: "Kapadokya", 
     sehir: "Nevşehir", 
+    aramaTerimi: "Cappadocia ",
     kategori: "Doğa", 
     puan: 4.6, 
     favori: false,
@@ -32,6 +35,7 @@ isim: "Anıtkabir",
   { 
     isim: "Sümela Manastırı", 
     sehir: "Trabzon", 
+    aramaTerimi: "Sumela Monastery",
     kategori: "Tarihi", 
     puan: 4.2, 
     favori: true,

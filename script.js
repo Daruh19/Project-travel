@@ -1,5 +1,6 @@
 import { mekanlar, hafizayaKaydet } from './veri.js';
 import { istatistikGuncelle } from './istatistik.js';
+import { sehirFotograflariniGetir } from './api.js';
 
 // DOM ELEMANLARI
 const sehirAdi = document.querySelector('#sehirAdi');
@@ -25,28 +26,12 @@ const modalSehir = document.querySelector('#modalSehir');
 const modalAciklama = document.querySelector('#modalAciklama');
 const modalPuan = document.querySelector('#modalPuan');
 
-const UNSPLASH_KEY = "2cKS8lvGWfpUsN3P9G-O2L5v6P2ydCZ0bcuWXUthnIk"
+
 const havaDurumuHafizasi = {};
 let aktifResimler = [];
 let mevcutResimIndeksi = 0;
 
-async function sehirFotograflariniGetir(sehirAdi, miktar = 4) {
-  try{
-    const url = `https://api.unsplash.com/search/photos?page=1&query=${sehirAdi}&per_page=${miktar}&client_id=${UNSPLASH_KEY}`;
-    const yanıt = await fetch(url);
 
-    if (!yanıt.ok) throw new Error("Fotoğraf Çekilemedi");
-
-    const veri = await yanıt.json();
-    
-    return veri.results.map(foto => foto.urls.regular);
-  }catch(hata){
-    console.error("Unsplash API Hatası:", hata);
-
-    return["https://images.unsplash.com/photo-1590077428593-a55bb07c4665?auto=format&fit=crop&w=400&q=80"];
-  }
-  
-}
 
 // EKRANI ÇİZME FONKSİYONU
 function listeyiCiz(gosterilecekListe = mekanlar) {
@@ -259,15 +244,20 @@ async function detayGoster(indeks){
   modalResim.src = 'https://via.placeholder.com/400x200?text=Yukleniyor...';
   detayModal.classList.add('aktif');
 
-  const aramaKelimeleri = `${mekan.isim}${mekan.sehir}`;
-  aktifResimler = await sehirFotograflariniGetir(aramaKelimeleri, 4);
+  const sorgu = mekan.aramaTerimi || `${mekan.isim} ${mekan.sehir}`
+  aktifResimler = await sehirFotograflariniGetir(sorgu, 4);
   mevcutResimIndeksi = 0;
 
   if (aktifResimler.length > 0) {
-    modalResim.src = aktifResimler[0];    
+    modalResim.src = aktifResimler[0];  
+      
   }else{
     modalResim.src = mekan.resim || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=500';
   }
+  aktifResimler.forEach(resimUrl => {
+    const img = new Image();
+    img.src = resimUrl;
+  });
 
 }
 function modaliKapat(){

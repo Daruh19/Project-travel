@@ -210,7 +210,7 @@ li button{
 .modal-content{
   background: white;
   width: 90%;
-  max-width: 450px;
+  max-width: 900px;
   border-radius: 16px;
   overflow: hidden;
   position: relative;
@@ -218,8 +218,9 @@ li button{
 }
 .modal-img{
   width: 100%;
-  height: 200px;
+  height: 100%;
   object-fit: cover;
+  transition: opacity 0.2s ease-in-out;
 }
 .modal-body{
   padding: 20px;
@@ -248,7 +249,7 @@ li button{
 .modal-slider{
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 420px;
 }
 .slider-btn{
   position: absolute;
