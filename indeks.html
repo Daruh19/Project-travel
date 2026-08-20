@@ -8,84 +8,73 @@
 </head>
 <body>
 
-    <!-- Sayfanın Başlığı ve Üst Alanı -->
+    <!-- KARŞILAMA / HERO ALANI -->
     <header class="hero-alani">
         <h1 class="hero-baslik">Dünyayı Keşfetmeye Başla</h1>
         <p class="hero-altbaslik">Unutulmaz rotalar, tarihi mekanlar, büyüleyici sahiller ve doğa harikaları seni bekliyor.</p>
+        
+        <!-- Canlı Arama Çubuğu -->
         <div class="hero-arama-cubugu">
             <input type="text" id="aramaInput" placeholder="Nereye gitmek istersin? (örn: Trabzon, Kapadokya)">
             <button id="aramaBtn">Keşfet</button>
         </div>
     </header>
     
-    <!-- Sayfanın Ana İçerik Alanı -->
-    <main>
-        <!-- İstatistik Bölümü -->
-        <section class="istatistik-paneli">
-            <div class="kart">
-                <h3>Toplam Mekan</h3>
-                <p id="toplamMekanSayisi">0</p>
-            </div>
-            <div class="kart">
-                <h3>Ortalama Puan</h3>
-                <p id="ortalamaPuanSayisi">0</p>
-            </div>
-        </section>
+    <!-- ANA İÇERİK KAPSAYICISI -->
+    <main class="ana-konteyner">
 
-        <!-- Filtreleme ve Kontrol Alanı -->
-        <section class="kontroller-alani">
-            <div style="margin: 10px 0;" id="kategoriButonlari">
-                <button data-kategori="hepsi">🏛️🌲 Tümü</button>
-                <button data-kategori="Tarihi">🏛️ Tarihi Yerler</button>
-                <button data-kategori="Doğa">🌲 Doğa</button>
-                <button data-kategori="favori" style="background-color: #e74c3c;">❤️ Favoriler</button>
-                <button id="btnApiYukle" style="background-color: #27ae60;">🌐 Sunucudan Rotaları Çek</button>
-            </div>
-
-            <div style="margin-bottom:15px;">
-                <label><strong>Mekan Ara:</strong></label>
-                <input type="text" id="aramaInput" placeholder="Mekan veya şehir adı yazın">
-            </div>
-
-            <!-- Ekleme Formu -->
-            <div class="form-alani">
-                <input type="text" id="sehirAdi" placeholder="Şehir Adı">
-                <input type="text" id="mekanAdi" placeholder="Mekan Adı">
-                <select id="kategoriSecim">
-                    <option value="">Kategori Seçin...</option>
-                    <option value="Tarihi">🏛️ Tarihi</option>
-                    <option value="Doğa">🌲 Doğa</option>
-                    <option value="Deniz">🏖️ Deniz</option>
-                </select>
-            </div>
-            <br>
+        <!-- KATEGORİ BARI (id="kategoriButonlari" eklendi, böylece JS hatası çözüldü) -->
+        <div class="kategori-bar" id="kategoriButonlari">
             
-            <div class="buton-alani">
-                <button id="ekleBtn">Seyehate ekle</button>
-                <button id="temizleBtn">Tümünü temizle</button>
-                <button id="btnYuksekPuan">⭐ En Yüksek Puanlılar</button>
-                <button id="btnDusukPuan">📉 Düşük Puanlılar</button>
-            </div>
-        </section>
+            <!-- data-kategori="hepsi": JS'e tüm listeyi çizmesini söyler -->
+            <button class="kat-btn aktif" data-kategori="hepsi">
+                <span class="kat-ikon">🌍</span>
+                <span class="kat-yazi">Tüm Rotalar</span>
+            </button>
 
-        <!-- Rota Kartlarının Listelendiği Bölüm -->
-        <section class="liste-bolumu">
-            <ul id="seyehatListesi"></ul>
-        </section>
+            <button class="kat-btn" data-kategori="Tarihi">
+                <span class="kat-ikon">🏛️</span>
+                <span class="kat-yazi">Tarihi</span>
+            </button>
+
+            <button class="kat-btn" data-kategori="Doğa">
+                <span class="kat-ikon">🌲</span>
+                <span class="kat-yazi">Doğa</span>
+            </button>
+
+            <button class="kat-btn" data-kategori="Deniz">
+                <span class="kat-ikon">🏖️</span>
+                <span class="kat-yazi">Deniz & Plaj</span>
+            </button>
+
+            <!-- Sadece Favorileri Gösteren Buton -->
+            <button class="kat-btn" data-kategori="favori">
+                <span class="kat-ikon">❤️</span>
+                <span class="kat-yazi">Favorilerim</span>
+            </button>
+        </div>
+
+        <!-- İSTATİSTİK ÖZET PANELİ (script.js dinamik doldurur) -->
+        <div class="istatistik-paneli"></div>
+
+        <!-- ROTA KARTLARININ DİNAMİK BASTIRILDIĞI UL LİSTESİ -->
+        <ul id="seyehatListesi"></ul>
+
     </main>
     
-    <!-- Sayfadan Bağımsız Diyalog/Pop-up Alanı (Modal) -->
+    <!-- DETAY MODAL PENCERESİ -->
     <aside id="detayModal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-kapat-btn" id="modalKapatBtn">✖</button>
 
+            <!-- Fotoğraf Slider Alanı -->
             <div class="modal-slider">
                 <button class="slider-btn prev-btn" id="sliderPrev">&lt;</button>
                 <img id="modalResim" src="" alt="" class="modal-img">
                 <button class="slider-btn next-btn" id="sliderNext">&gt;</button>
             </div>
             
-            
+            <!-- Modal Bilgi Metinleri -->
             <div class="modal-body">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h2 id="modalBaslik" style="margin: 0;"></h2>
@@ -98,7 +87,7 @@
         </div>
     </aside>
 
-    <!-- Ana Modül -->
+    <!-- Ana JavaScript Modülü -->
     <script type="module" src="script.js"></script>
 </body>
 </html>
