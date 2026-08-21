@@ -1,6 +1,7 @@
 import { mekanlar, hafizayaKaydet } from './veri.js';
 import { istatistikGuncelle } from './istatistik.js';
-import { sehirFotograflariniGetir } from './api.js';
+
+import { sehirFotograflariniGetir, sehirKoordinatGetir, anlikHavaGetir, gecmisOrtalamaGetir } from './api.js';
 
 // --- DOM ELEMANLARI (Sadece HTML'de Aktif Olanlar) ---
 const seyehatListesi = document.querySelector('#seyehatListesi'); // Kartların ekleneceği UL[cite: 2]
@@ -16,6 +17,10 @@ const modalKategori = document.querySelector('#modalKategori');
 const modalSehir = document.querySelector('#modalSehir');
 const modalAciklama = document.querySelector('#modalAciklama');
 const modalPuan = document.querySelector('#modalPuan');
+
+const tarihBaslangic = document.querySelector('#tarihBaslangic');
+const tarihBitis = document.querySelector('#tarihBitis');
+const aramaBtn = document.querySelector('#aramaBtn');
 
 // --- HAFIZA VE SLIDER DEĞİŞKENLERİ ---
 const havaDurumuHafizasi = {}; // Şehir hava durumlarını tekrar sorgulamamak için önbellek
@@ -191,26 +196,49 @@ document.querySelector('#sliderPrev')?.addEventListener('click', () => {
 });
 
 // --- HAVA DURUMU SİMÜLASYONU ---
-async function havaDurumuGetir(sehir) {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  const durumlar = ['☀️ 25°C Güneşli', '🌤️ 20°C Parçalı Bulutlu', '🌧️ 15°C Yağmurlu', '🌤️ 22°C Açık'];
-  return durumlar[Math.floor(Math.random() * durumlar.length)];
-}
+
 
 async function kartHavaDurumlariniGuncelle(liste) {
+  const baslangic = tarihBaslangic.value;
+  const bitis = tarihBitis.value;
+
   liste.forEach(async (mekan, indeks) => {
     const havaKutusu = document.querySelector(`#hava-${indeks}`);
     if (!havaKutusu) return;
 
-    if (havaDurumuHafizasi[mekan.sehir]) {
-      havaKutusu.textContent = havaDurumuHafizasi[mekan.sehir];
+    havaKutusu.textContent = "⏳ Hava hesaplanıyor...";
+
+    // 1. Şehrin koordinatlarını alıyoruz
+    const koordinat = await sehirKoordinatGetir(mekan.sehir);
+    if (!koordinat) {
+      havaKutusu.textContent = "🌤️ Veri bulunamadı";
       return;
     }
-    const durum = await havaDurumuGetir(mekan.sehir);
-    havaDurumuHafizasi[mekan.sehir] = durum;
-    havaKutusu.textContent = durum;
+if (baslangic && bitis) {
+  const ortalama = await gecmisOrtalamaGetir(koordinat.enlem, koordinat.boylam, baslangic, bitis);
+  if (ortalama) {
+    // Artık hem gündüz hem gece değerini ayrıştırıp yazdırıyoruz
+    havaKutusu.innerHTML = `☀️ <strong>Gündüz:</strong> ${ortalama.gunduz}°C | 🌙 <strong>Gece:</strong> ${ortalama.gece}°C`;
+  } else {
+    havaKutusu.textContent = "🌤️ Hava tahmini alınamadı";
+  }
+}
+    // 3. Tarih seçilmediyse o anki CANLI dereceyi göster
+    else {
+      const anlikDerece = await anlikHavaGetir(koordinat.enlem, koordinat.boylam);
+      if (anlikDerece !== null) {
+        havaKutusu.innerHTML = `☀️ <strong>Anlık:</strong> ${anlikDerece}°C`;
+      } else {
+        havaKutusu.textContent = "🌤️ Canlı derece alınamadı";
+      }
+    }
   });
 }
+
+// "Keşfet" Butonuna Basıldığında Hava Durumlarını Yeniden Hesapla
+aramaBtn.addEventListener('click', () => {
+  listeyiCiz();
+});
 
 // --- İLK AÇILIŞTA ÇALIŞTIR ---
 listeyiCiz();
