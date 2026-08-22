@@ -21,6 +21,7 @@ const modalPuan = document.querySelector('#modalPuan');
 const tarihBaslangic = document.querySelector('#tarihBaslangic');
 const tarihBitis = document.querySelector('#tarihBitis');
 const aramaBtn = document.querySelector('#aramaBtn');
+const siralamaSelect = document.querySelector('#siralamaSelect');
 
 // --- HAFIZA VE SLIDER DEĞİŞKENLERİ ---
 const havaDurumuHafizasi = {}; // Şehir hava durumlarını tekrar sorgulamamak için önbellek
@@ -239,6 +240,14 @@ if (baslangic && bitis) {
 aramaBtn.addEventListener('click', () => {
   listeyiCiz();
 });
-
+siralamaSelect.addEventListener('change',function(){
+  if (siralamaSelect.value === "puan") {
+    const puan = mekanlar.sort((a,b) => b.puan - a.puan);
+    listeyiCiz(puan);
+  }else if(siralamaSelect.value === "isim"){
+    const isim = mekanlar.sort((a,b) => a.isim.localeCompare(b.isim));
+    listeyiCiz(isim);
+  }
+});
 // --- İLK AÇILIŞTA ÇALIŞTIR ---
 listeyiCiz();
